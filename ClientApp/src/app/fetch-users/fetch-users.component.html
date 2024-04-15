@@ -1,0 +1,69 @@
+<h1 id="tableLabel">Tabla Usuarios</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+
+<form>
+  <h2>Add Elements to Users Table</h2>
+  <div class="form-group">
+    <label for="nombre">Username:</label>
+    <input type="text" class="form-control" id="user_name" name="user_name">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Send</button>
+</form>
+
+<p *ngIf="!users?.length"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="users.length">
+  <thead>
+    <tr>
+      <th>ID de usuario</th>
+      <th>Nombre de usuario</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user.user_id }}</td>
+      <td>{{ user.user_name }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="items.length">
+  <thead>
+    <tr>
+      <th>ID de item</th>
+      <th>Nombre del item</th>
+      <th>Descripcion del item</th>
+      <th>ID de vendedor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of items">
+      <td>{{ item.item_id }}</td>
+      <td>{{ item.item_name }}</td>
+      <td>{{ item.item_description }}</td>
+      <td>{{ item.user_id }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="auctions.length">
+  <thead>
+    <tr>
+      <th>ID de Subasta</th>
+      <th>ID de item</th>
+      <th>Comieno de subasta</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let auction of auctions">
+      <td>{{ auction.auction_id }}</td>
+      <td>{{ auction.item_id }}</td>
+      <td>{{ auction.auction_start_date }}</td>
+    </tr>
+  </tbody>
+</table>
+
+ 
