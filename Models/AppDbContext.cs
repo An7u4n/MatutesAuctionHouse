@@ -18,11 +18,11 @@ namespace MatutesAuctionHouse.Models
             modelBuilder.Entity<Item>().ToTable("Item");
             modelBuilder.Entity<Auction>().ToTable("Auction");
             modelBuilder.Entity<Item>()
-                .HasOne(i => i.User)
+                .HasOne<User>()
                 .WithMany()
                 .HasForeignKey(i => i.user_id);
             modelBuilder.Entity<Auction>()
-                .HasOne(i => i.Item)
+                .HasOne<Item>()
                 .WithMany()
                 .HasForeignKey(i => i.item_id);
         }

@@ -18,3 +18,14 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.btn-delete{
+    display: block;
+    width:35px;
+    padding: 3px;
+    border-radius: 100%;
+    background-color: crimson;
+    cursor: pointer;
+    text-align: center;
+    color: white !important;
+}

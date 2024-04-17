@@ -1,14 +1,16 @@
 <h1 id="tableLabel">Tabla Usuarios</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<p>This component demontrates fetching data from the server.</p>
 
 
-<form>
+<form (ngSubmit)="postUser(userForm)" #userForm="ngForm">
   <h2>Add Elements to Users Table</h2>
+  <br />
   <div class="form-group">
-    <label for="nombre">Username:</label>
-    <input type="text" class="form-control" id="user_name" name="user_name">
+    <label for="user_name">Username:</label>
+    <input type="text" class="form-control" id="user_name" name="user_name" ngModel>
   </div>
+  <br />
 
   <button type="submit" class="btn btn-primary">Send</button>
 </form>
@@ -20,15 +22,33 @@
     <tr>
       <th>ID de usuario</th>
       <th>Nombre de usuario</th>
+      <th>Acciones</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let user of users">
       <td>{{ user.user_id }}</td>
       <td>{{ user.user_name }}</td>
+      <td><button (click)="deleteUser(user.user_id)" class="btn-delete">X</button></td>
     </tr>
   </tbody>
 </table>
+
+<form (ngSubmit)="postItems(itemsForm)" #itemsForm="ngForm">
+  <h2>Add Elements to Items Table</h2>
+  <div class="form-group">
+    <label for="user_name">Item Name:</label>
+    <input type="text" class="form-control" name="item_name" ngModel>
+    <label for="item_description">Item Description:</label>
+    <input type="text" class="form-control" name="item_description" ngModel>
+    <label for="item_user_name">User:</label>
+    <select class="form-control" [(ngModel)]="item_user_name" name="item_user_name">
+      <option *ngFor="let user of users" [value]="user.user_id">{{ user.user_name }}</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Send</button>
+</form>
 
 <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="items.length">
   <thead>
@@ -36,7 +56,8 @@
       <th>ID de item</th>
       <th>Nombre del item</th>
       <th>Descripcion del item</th>
-      <th>ID de vendedor</th>
+      <th>ID de usuario dueño</th>
+      <th>Acciones</th>
     </tr>
   </thead>
   <tbody>
@@ -45,9 +66,24 @@
       <td>{{ item.item_name }}</td>
       <td>{{ item.item_description }}</td>
       <td>{{ item.user_id }}</td>
+      <td><button (click)="deleteItem(item.item_id)" class="btn-delete">X</button></td>
     </tr>
   </tbody>
 </table>
+
+<form (ngSubmit)="postAuction(auctionsForm)" #auctionsForm="ngForm">
+  <h2>Add Elements to Items Table</h2>
+  <div class="form-group">
+    <label for="startDate">Select Auction Start Date</label>
+    <input type="date" name="date" ngModel/>
+    <input type="time" name="time" ngModel/>
+    <select class="form-control" [(ngModel)]="auction_item_id" name="auction_item_id">
+      <option *ngFor="let item of items" [value]="item.item_id">{{ item.item_name }}</option>
+    </select>
+  </div>
+  <br />
+  <button type="submit" class="btn btn-primary">Send</button>
+</form>
 
 <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="auctions.length">
   <thead>
@@ -55,6 +91,7 @@
       <th>ID de Subasta</th>
       <th>ID de item</th>
       <th>Comieno de subasta</th>
+      <th>Acciones</th>
     </tr>
   </thead>
   <tbody>
@@ -62,6 +99,7 @@
       <td>{{ auction.auction_id }}</td>
       <td>{{ auction.item_id }}</td>
       <td>{{ auction.auction_start_date }}</td>
+      <td><button (click)="deleteAuction(auction.auction_id)" class="btn-delete">X</button></td>
     </tr>
   </tbody>
 </table>
