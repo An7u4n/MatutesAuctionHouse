@@ -17,6 +17,9 @@ namespace MatutesAuctionHouse.Models
             modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<Item>().ToTable("Item");
             modelBuilder.Entity<Auction>().ToTable("Auction");
+            modelBuilder.Entity<User>()
+                .HasIndex(p => new { p.user_name, p.email } )
+                .IsUnique();
             modelBuilder.Entity<Item>()
                 .HasOne<User>()
                 .WithMany()
