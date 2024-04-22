@@ -1,5 +1,11 @@
 using MatutesAuctionHouse.Models;
+using MatutesAuctionHouse.Models.Common;
+using MatutesAuctionHouse.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Configuration;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +23,31 @@ builder.Services.AddCors(options =>
                       });
 });
 builder.Services.AddControllersWithViews();
+var appSettingsSection = builder.Configuration.GetSection("AppSettings");
+builder.Services.Configure<AppSettings>(appSettingsSection);
+
+// JWT
+var appSettings = appSettingsSection.Get<AppSettings>();
+var jwtKey = Encoding.ASCII.GetBytes(appSettings.JWTSecret);
+builder.Services.AddAuthentication(d =>
+{
+    d.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    d.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(d =>
+    {
+        d.RequireHttpsMetadata = false;
+        d.SaveToken = true;
+        d.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(jwtKey),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
+
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("database")));
 
 var app = builder.Build();
@@ -38,6 +69,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseCors(corspol);
+app.UseAuthorization();
 
 
 app.MapControllerRoute(

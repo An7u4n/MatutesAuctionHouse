@@ -1,10 +1,12 @@
 ﻿using MatutesAuctionHouse.Models;
 using MatutesAuctionHouse.Models.Response;
 using MatutesAuctionHouse.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MatutesAuctionHouse.Controllers
 {
+
     public class UserLoginController : Controller
     {
         private IUserService _userService;
@@ -13,9 +15,7 @@ namespace MatutesAuctionHouse.Controllers
         {
             _userService = userService;
         }
-        
 
-        //TODO correct message, test the url
         [HttpPost("api/Users/login")]
         public IActionResult Authentication([FromBody] AuthRequest model)
         {

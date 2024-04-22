@@ -27,14 +27,14 @@ export class FetchUsersComponent {
   }
 
   postUser(userForm: any) {
-    this.apiservice.postUser(userForm.value.user_name).subscribe(res => {
-      alert("Usuario Creado");
+    this.apiservice.postUser(userForm.value.user_name, userForm.value.password, userForm.value.email).subscribe(res => {
+      alert("User Created");
     }, err => console.error(err));
   }
 
   deleteUser(user_id: number) {
     this.apiservice.deleteUser(user_id).subscribe(res => {
-      alert("Usuario Eliminado");
+      alert("User Deleted");
     }, err => console.error(err));
   }
 
@@ -44,7 +44,7 @@ export class FetchUsersComponent {
       itemsForm.value.item_description,
       this.item_user_name,
     ).subscribe(res => {
-      alert("Item Agregado");
+      alert("Item Added");
     }, err => console.error(err));
   }
 

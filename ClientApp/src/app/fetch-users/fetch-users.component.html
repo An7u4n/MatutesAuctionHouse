@@ -8,7 +8,11 @@
   <br />
   <div class="form-group">
     <label for="user_name">Username:</label>
-    <input type="text" class="form-control" id="user_name" name="user_name" ngModel>
+    <input type="text" class="form-control" name="user_name" ngModel>
+    <label for="email">Email:</label>
+    <input type="email" class="form-control" name="email" ngModel>
+    <label for="password">Password:</label>
+    <input type="password" class="form-control" name="password" ngModel>
   </div>
   <br />
 
@@ -20,15 +24,19 @@
 <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="users.length">
   <thead>
     <tr>
-      <th>ID de usuario</th>
-      <th>Nombre de usuario</th>
-      <th>Acciones</th>
+      <th>User ID</th>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Pass</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let user of users">
       <td>{{ user.user_id }}</td>
       <td>{{ user.user_name }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.password }}</td>
       <td><button (click)="deleteUser(user.user_id)" class="btn-delete">X</button></td>
     </tr>
   </tbody>

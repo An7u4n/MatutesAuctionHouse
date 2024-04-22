@@ -16,9 +16,11 @@ export class ApiService {
     return this._http.get<Users[]>(this.url + 'Users');
   }
 
-  postUser(user_name: string): Observable<any> {
+  postUser(user_name: string, email: string, password: string): Observable<any> {
     return this._http.post<any>(this.url + 'Users', {
       user_name: user_name,
+      email: email,
+      password: password,
     });
   }
 

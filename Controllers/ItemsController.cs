@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MatutesAuctionHouse.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MatutesAuctionHouse.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ItemsController : ControllerBase
     {
         private readonly AppDbContext _context;
