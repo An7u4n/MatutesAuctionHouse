@@ -21,6 +21,7 @@ export class FetchUsersComponent {
     this.apiservice.getItems().subscribe(result => {
       this.items = result;
     }, err => console.error(err));
+
     this.apiservice.getAuctions().subscribe(result => {
       this.auctions = result;
     }, err => console.error(err));

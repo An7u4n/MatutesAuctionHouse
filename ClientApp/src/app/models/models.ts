@@ -17,3 +17,9 @@ export interface Auctions {
   item_id: number;
   auction_start_date: Date;
 }
+
+export interface Response {
+  success: number;
+  message: string;
+  data: object;
+}

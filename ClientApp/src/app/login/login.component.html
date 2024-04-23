@@ -1,0 +1,13 @@
+<form (ngSubmit)="login(logInForm.value)" #logInForm="ngForm">
+  <h2>Add Elements to Users Table</h2>
+  <br />
+  <div class="form-group">
+    <label for="email">Email:</label>
+    <input type="email" class="form-control" name="email" ngModel="email">
+    <label for="password">Password:</label>
+    <input type="password" class="form-control" name="password" ngModel>
+  </div>
+  <br />
+
+  <button type="submit" class="btn btn-primary">Log in</button>
+</form>

@@ -30,7 +30,7 @@ namespace MatutesAuctionHouse.Services
             UserResponse userResponse = new UserResponse();
             string spassword = Encrypt.GetSHA256(model.password);
             var user = _context.Users.Where(d => d.email == model.email && d.password == spassword).FirstOrDefault();
-            if (user != null) userResponse.email = user.email;
+            if (user == null) return null;
             userResponse.email = user.email;
             userResponse.token = GetToken(user);
             return userResponse;
