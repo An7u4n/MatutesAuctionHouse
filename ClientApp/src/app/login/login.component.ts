@@ -11,7 +11,7 @@ export class LoginComponent implements OnInit {
   constructor(public apiauth: ApiAuthService) {
 
   }
-
+  //TODO Add token auth
   ngOnInit() {
 
   }
