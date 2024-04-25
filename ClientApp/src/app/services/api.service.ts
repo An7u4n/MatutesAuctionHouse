@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { Users, Items, Auctions } from '../models/models';
+import { User, Item, Auction } from '../models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,12 @@ export class ApiService {
   constructor(private _http: HttpClient) { }
 
   // User Methods
-  getUsers(): Observable<Users[]> {
-    return this._http.get<Users[]>(this.url + 'Users');
+  getUser(id: number): Observable<User> {
+    return this._http.get<User>(this.url + 'User/' + id)
+  }
+
+  getUsers(): Observable<User[]> {
+    return this._http.get<User[]>(this.url + 'Users');
   }
 
   postUser(user_name: string, email: string, password: string): Observable<any> {
@@ -29,8 +33,8 @@ export class ApiService {
   }
 
   // Items Methods
-  getItems(): Observable<Items[]> {
-    return this._http.get<Items[]>(this.url + 'Items');
+  getItems(): Observable<Item[]> {
+    return this._http.get<Item[]>(this.url + 'Items');
   }
 
   postItems(item_name: string, item_description: string, user_id: number): Observable<any> {
@@ -47,8 +51,8 @@ export class ApiService {
 
 
   // Auction Methods
-  getAuctions(): Observable<Auctions[]> {
-    return this._http.get<Auctions[]>(this.url + 'Auctions');
+  getAuctions(): Observable<Auction[]> {
+    return this._http.get<Auction[]>(this.url + 'Auctions');
   }
 
   postAuction(item_id: number, auction_start_date: string): Observable<any> {

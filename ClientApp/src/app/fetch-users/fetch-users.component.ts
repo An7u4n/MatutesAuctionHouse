@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Users, Items, Auctions } from '../models/models';
+import { User, Item, Auction } from '../models/models';
 import { ApiService } from '../services/api.service';
 @Component({
   selector: 'app-fetch-users',
@@ -7,9 +7,9 @@ import { ApiService } from '../services/api.service';
   styleUrls: ['../../styles.css'],
 })
 export class FetchUsersComponent {
-  public users: Users[] = [];
-  public items: Items[] = [];
-  public auctions: Auctions[] = [];
+  public users: User[] = [];
+  public items: Item[] = [];
+  public auctions: Auction[] = [];
   public item_user_name: any;
   public auction_item_id: any;
 

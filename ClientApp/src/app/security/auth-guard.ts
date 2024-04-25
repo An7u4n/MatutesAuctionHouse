@@ -7,10 +7,10 @@ export class AuthGuard implements CanActivate {
   constructor(private router: Router) {
 
   }
-
+  // TODO 25/04 make navigation works
   canActivate(router: ActivatedRouteSnapshot) {
     this.router.navigate(['/login']);
     return false;
-    }
+  }
 
 }
