@@ -1,0 +1,14 @@
+<article>
+  <div class="image-container">
+    <img class="product-img" src="../../assets/images/producto1.png" />
+    {{ item ? item.item_name : "cargando"}}
+  </div>
+  <div class="info-container">
+    <p>
+      Id de la subasta: {{ auction.auction_id }}
+    </p>
+    <p>
+      Dia de subasta: {{ auction.auction_start_date }}
+    </p>
+  </div>
+</article>
