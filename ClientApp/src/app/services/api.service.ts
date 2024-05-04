@@ -33,6 +33,10 @@ export class ApiService {
   }
 
   // Items Methods
+  getItem(item_id: number) {
+    return this._http.get<any>(this.url + 'Items/' + item_id);
+  }
+
   getItems(): Observable<Item[]> {
     return this._http.get<Item[]>(this.url + 'Items');
   }
@@ -51,6 +55,10 @@ export class ApiService {
 
 
   // Auction Methods
+  getAuction(auction_id: number) {
+    return this._http.get<any>(this.url + 'Auctions/' + auction_id);
+  }
+
   getAuctions(): Observable<Auction[]> {
     return this._http.get<Auction[]>(this.url + 'Auctions');
   }

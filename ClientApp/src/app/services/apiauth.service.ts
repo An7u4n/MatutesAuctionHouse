@@ -20,7 +20,7 @@ const httpOption = {
 @Injectable({ providedIn: 'root' })
 export class ApiAuthService {
   url: string = 'https://localhost:7268/api/Users/login';
-  private _usuarioSubject: BehaviorSubject<User>;
+  private _usuarioSubject: any;
 
   public get userData(): User {
     return this._usuarioSubject.value;
@@ -28,7 +28,9 @@ export class ApiAuthService {
 
   constructor(private _http: HttpClient) {
     const storedUser = localStorage.getItem('user');
-    this._usuarioSubject = new BehaviorSubject<User>(storedUser ? JSON.parse(storedUser) : null);
+    if (storedUser) this._usuarioSubject = new BehaviorSubject<User | null>(JSON.parse(storedUser));
+    else this._usuarioSubject = new BehaviorSubject<User | null>(null);
+
   }
 
   login(email: string, password: string): Observable<Response> {

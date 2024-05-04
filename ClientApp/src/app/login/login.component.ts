@@ -7,14 +7,13 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['../../styles.css'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
 
   constructor(public apiauth: ApiAuthService, public router: Router) {
-
-  }
-
-  ngOnInit() {
-
+    const user = this.apiauth.userData;
+    if (user) {
+      this.router.navigate(['/']);
+    }
   }
 
   login(logInForm: any) {
