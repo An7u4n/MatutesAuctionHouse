@@ -9,9 +9,9 @@ import { Auction } from '../models/models';
 })
 export class AuctionContainerComponent {
   public auctions: Auction[] = [];
-  //constructor(private apiservice: ApiService) {
-  //  this.apiservice.getAuctions().subscribe(result => {
-  //    this.auctions = result;
-  //  }, err => console.error(err));
-  //}
+  constructor(private apiservice: ApiService) {
+    this.apiservice.getAuctions().subscribe(result => {
+      this.auctions = result;
+    }, err => console.error(err));
+  }
 }

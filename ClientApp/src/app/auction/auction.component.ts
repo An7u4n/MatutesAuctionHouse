@@ -15,8 +15,8 @@ export class AuctionComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this.apiservice.getItem(this.auction.item_id).subscribe(result => {
-    //  this.item = result;
-    //}, err => console.error(err));
+    this.apiservice.getItem(this.auction.item_id).subscribe(result => {
+      this.item = result;
+    }, err => console.error(err));
   }
 }
