@@ -1,8 +1,6 @@
 <h1 id="tableLabel">Tabla Usuarios</h1>
 
-<p>This component demontrates fetching data from the server.</p>
-
-
+<!--
 <form (ngSubmit)="postUser(userForm)" #userForm="ngForm">
   <h2>Add Elements to Users Table</h2>
   <br />
@@ -79,12 +77,14 @@
   </tbody>
 </table>
 
+   -->
+
 <form (ngSubmit)="postAuction(auctionsForm)" #auctionsForm="ngForm">
   <h2>Add Elements to Items Table</h2>
   <div class="form-group">
     <label for="startDate">Select Auction Start Date</label>
-    <input type="date" name="date" ngModel/>
-    <input type="time" name="time" ngModel/>
+    <input type="date" name="date" ngModel />
+    <input type="time" name="time" ngModel />
     <select class="form-control" [(ngModel)]="auction_item_id" name="auction_item_id">
       <option *ngFor="let item of items" [value]="item.item_id">{{ item.item_name }}</option>
     </select>
@@ -112,4 +112,4 @@
   </tbody>
 </table>
 
- 
+
