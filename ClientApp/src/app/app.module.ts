@@ -29,13 +29,9 @@ import { AuctionComponent } from './auction/auction.component';
     FormsModule,
     RouterModule.forRoot([
       { path: 'login', component: LoginComponent },
-      {
-        path: '', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard], children:
-        [
-          { path: 'fetch-users', component: FetchUsersComponent },
-          { path: 'auctions', component: AuctionContainerComponent },
-        ]
-      }
+      { path: '', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard]},
+      { path: 'fetch-users', component: FetchUsersComponent, canActivate: [AuthGuard] },
+      { path: 'auctions', component: AuctionContainerComponent, canActivate: [AuthGuard] },
     ])
   ],
   providers: [
