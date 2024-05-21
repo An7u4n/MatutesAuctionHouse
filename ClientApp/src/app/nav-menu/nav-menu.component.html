@@ -5,16 +5,23 @@
           [routerLinkActiveOptions]="{ exact: true }">
         <a class="" [routerLink]="['/']">MatutesAuctionHouse</a>
       </li>
-      <li [routerLinkActive]="['link-active']"
-          [routerLinkActiveOptions]="{ exact: true }">
-        <a [routerLink]="['/']">Home</a>
+      <li *ngIf="user">
+        <a [routerLink]="['/auctions']">Subastas</a>
       </li>
-      <li>
-        <a [routerLink]="['/auctions']">Auctions</a>
-      </li>
-      <li>
-        <a [routerLink]="['/fetch-users']">Profile</a>
+      <li *ngIf="user" [matMenuTriggerFor]="appMenu">
+        <a class="profile">
+          {{ user.user_name }}
+          <mat-icon class="profile-icon">person</mat-icon>
+        </a>
+        <mat-menu #appMenu="matMenu" xPosition="before" class="menu">
+          <ng-template matMenuContent class="menu">
+            <button mat-menu-item [routerLink]="['/profile']" class="btn-menu">Perfil</button>
+            <button mat-menu-item (click)="logout()">Cerrar Sesion</button>
+          </ng-template>
+        </mat-menu>
       </li>
     </ul>
   </nav>
 </header>
+<app-popup [showPopup]="showPopup"></app-popup>
+

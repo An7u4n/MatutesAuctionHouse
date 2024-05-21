@@ -1,0 +1,13 @@
+<div class="background-blur" [style.display]="showPopup ? 'block' : 'none'">
+</div>
+  <div class="popup-overlay" [style.display]="showPopup ? 'block' : 'none'">
+    <div class="popup-container">
+      <div class="popup-header">
+        <h2>Sesion Cerrada</h2>
+        <button (click)="closePopup()">Cerrar</button>
+      </div>
+      <div class="popup-content">
+        Gracias por confiar en nosotros...
+      </div>
+    </div>
+  </div>

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Configuration;
 using System.Text;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,13 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllersWithViews();
 var appSettingsSection = builder.Configuration.GetSection("AppSettings");
 builder.Services.Configure<AppSettings>(appSettingsSection);
+builder.Services.AddScoped<AuctionService>();
+
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<MatutesAuctionHouse.Models.Query>()
+    .AddMutationType<Mutation>()
+    .AddSubscriptionType<Subscription>();
 
 // JWT
 var appSettings = appSettingsSection.Get<AppSettings>();
@@ -65,6 +73,12 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseWebSockets();
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapGraphQL();
+});
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();

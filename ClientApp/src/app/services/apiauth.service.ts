@@ -16,7 +16,6 @@ const httpOption = {
   })
 }
 
-
 @Injectable({ providedIn: 'root' })
 export class ApiAuthService {
   url: string = 'https://localhost:7268/api/Users/login';
@@ -44,9 +43,5 @@ export class ApiAuthService {
         return res;
       })
     );
-  }
-
-  logout() {
-    localStorage.removeItem('user');
   }
 }

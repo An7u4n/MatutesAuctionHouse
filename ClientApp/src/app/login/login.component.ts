@@ -19,6 +19,7 @@ export class LoginComponent {
   login(logInForm: any) {
     this.apiauth.login(logInForm.email, logInForm.password).subscribe(res => {
       if (res.success === 1) this.router.navigate(['/']);
+      location.reload();
     })
   }
 }

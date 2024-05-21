@@ -1,0 +1,17 @@
+<form (ngSubmit)="register(userForm.value)" #userForm="ngForm">
+  <p class="title">Registrarse</p>
+  <div>
+    <label for="email">Usuario:</label>
+    <input type="text" class="form-control" name="user_name" ngModel>
+    <label for="email">Email:</label>
+    <input type="email" class="form-control" name="email" ngModel>
+    <label for="password">Password:</label>
+    <input type="password" class="form-control" name="password" ngModel>
+  </div>
+  <br />
+
+  <button type="submit" class="btn btn-primary">Registrarse</button>
+  <p class="register-text">
+    Tengo una cuenta, quiero <a class="register-link" [routerLink]="['/login']">logearme</a>
+  </p>
+</form>

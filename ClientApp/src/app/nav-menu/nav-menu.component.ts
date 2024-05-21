@@ -6,5 +6,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent {
+  public showPopup: boolean = false;
+  public user: any;
 
+  constructor() {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) this.user = JSON.parse(storedUser);
+  }
+
+  logout() {
+    localStorage.removeItem('user');
+    this.showPopup = true;
+  }
 }

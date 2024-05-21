@@ -1,6 +1,5 @@
 <form (ngSubmit)="login(logInForm.value)" #logInForm="ngForm">
   <p class="title">Iniciar Sesion</p>
-  <br />
   <div>
     <label for="email">Email:</label>
     <input type="email" class="form-control" name="email" ngModel>
@@ -10,4 +9,7 @@
   <br />
 
   <button type="submit" class="btn btn-primary">Iniciar Sesion</button>
+  <p class="register-text">
+    No tengo una cuenta, quiero <a class="register-link" [routerLink]="['/register']">registrarme</a>
+  </p>
 </form>

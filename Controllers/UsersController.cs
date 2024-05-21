@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MatutesAuctionHouse.Models;
 using MatutesAuctionHouse.Services;
+using MatutesAuctionHouse.Tools;
 
 namespace MatutesAuctionHouse.Controllers
 {
@@ -90,6 +91,7 @@ namespace MatutesAuctionHouse.Controllers
             {
                 return Problem("Entity set 'AppDbContext.Users'  is null.");
             }
+            user.password = Encrypt.GetSHA256(user.password);
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
