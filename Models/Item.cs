@@ -10,6 +10,6 @@ namespace MatutesAuctionHouse.Models
         [Required] public string item_description { get; set; }
         [ForeignKey("user_id")]
         [Required] public int user_id { get; set; }
-
+        public Auction Auction { get; set; }
     }
 }

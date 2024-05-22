@@ -21,21 +21,4 @@ namespace MatutesAuctionHouse.Models
         [Topic]
         public AuctionPrice OnPriceChange([EventMessage] AuctionPrice newPrice) => newPrice;
     }
-    public class Mutation
-    {
-        private readonly ITopicEventSender _eventSender;
-
-        public Mutation(ITopicEventSender eventSender)
-        {
-            _eventSender = eventSender;
-        }
-
-        public async Task<int> UpdatePrice(int id, int newPrice)
-        {
-            var priceChange = new AuctionPrice { auction_id = id, price = newPrice };
-            await _eventSender.SendAsync(nameof(Subscription.OnPriceChange), priceChange);
-            return newPrice;
-        }
-    }
-
 }
