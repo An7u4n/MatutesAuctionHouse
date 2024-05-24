@@ -1,3 +1,4 @@
+using MatutesAuctionHouse.Graphql;
 using MatutesAuctionHouse.Models;
 using MatutesAuctionHouse.Models.Common;
 using MatutesAuctionHouse.Services;
@@ -30,9 +31,8 @@ builder.Services.AddScoped<AuctionService>();
 
 builder.Services
     .AddGraphQLServer()
-    .AddQueryType<MatutesAuctionHouse.Models.Query>()
-    .AddMutationType<Mutation>()
-    .AddSubscriptionType<Subscription>();
+    .AddQueryType<MatutesAuctionHouse.Graphql.Query>()
+    .AddMutationType<Mutation>();
 
 // JWT
 var appSettings = appSettingsSection.Get<AppSettings>();
@@ -75,6 +75,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseWebSockets();
 app.UseRouting();
+app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapGraphQL();
@@ -83,7 +84,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseCors(corspol);
-app.UseAuthorization();
 
 
 app.MapControllerRoute(

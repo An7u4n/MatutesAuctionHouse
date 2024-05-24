@@ -87,10 +87,31 @@ namespace MatutesAuctionHouse.Controllers
         [HttpPost]
         public async Task<ActionResult<Auction>> PostAuction(Auction auction)
         {
-          if (_context.Auctions == null)
-          {
-              return Problem("Entity set 'AppDbContext.Auctions'  is null.");
-          }
+            if (_context.Auctions == null)
+            {
+                return Problem("Entity set 'AppDbContext.Auctions'  is null.");
+            }
+
+            /*if (auctionDto.auction_start_date < DateTime.Now)
+            {
+                return BadRequest("Auction start time is in the past.");
+            }
+            // Validar existencia del item
+            var item = await _context.Items.FindAsync(auctionDto.item_id);
+
+            if (item == null)
+            {
+                return NotFound("Item not found.");
+            }
+
+            var auction = new Auction
+            {
+                auction_start_date = auctionDto.auction_start_date,
+                item_id = auctionDto.item_id,
+                Item = item,
+
+            };*/
+
             _context.Auctions.Add(auction);
             await _context.SaveChangesAsync();
 

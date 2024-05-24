@@ -85,16 +85,39 @@ namespace MatutesAuctionHouse.Controllers
         // POST: api/Items
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Item>> PostItem(Item item)
+        public async Task<ActionResult<ItemDto>> PostItem(ItemDto itemDto)
         {
           if (_context.Items == null)
           {
               return Problem("Entity set 'AppDbContext.Items'  is null.");
           }
+
+            var user = await _context.Users.FindAsync(itemDto.user_id);
+            if (user == null)
+            {
+                return NotFound(new { Message = "User not found" });
+            }
+
+            var item = new Item
+            {
+                item_name = itemDto.item_name,
+                item_description = itemDto.item_description,
+                user_id = itemDto.user_id,
+                User = user
+            };
+
             _context.Items.Add(item);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetItem", new { id = item.item_id }, item);
+            var result = new ItemDto
+            {
+                item_id = item.item_id,
+                item_name = item.item_name,
+                item_description = item.item_description,
+                user_id = item.user_id
+            };
+
+            return CreatedAtAction("GetItem", new { id = item.item_id }, result);
         }
 
         // DELETE: api/Items/5

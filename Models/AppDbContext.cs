@@ -21,29 +21,34 @@ namespace MatutesAuctionHouse.Models
             modelBuilder.Entity<AuctionPrice>().ToTable("AuctionPrice");
 
             modelBuilder.Entity<User>()
-                .HasIndex(p => new { p.user_name, p.email })
+                .HasIndex(p => p.email )
                 .IsUnique();
 
-            modelBuilder.Entity<Item>()
-                .HasOne<User>()
-                .WithMany()
-                .HasForeignKey(i => i.user_id);
+            modelBuilder.Entity<User>()
+                .HasIndex(p => p.user_name)
+                .IsUnique();
 
-            modelBuilder.Entity<Item>()
-                .HasOne(navAuct => navAuct.Auction)
-                .WithOne(navItem => navItem.Item)
-                .HasForeignKey<Auction>(key => key.item_id);
+            modelBuilder.Entity<User>()
+                .HasMany(user => user.Items)
+                .WithOne(item => item.User)
+                .HasForeignKey(item => item.user_id);
 
             modelBuilder.Entity<Auction>()
-                .HasOne(a => a.AuctionPrice)
-                .WithOne(ap => ap.Auction)
-                .HasForeignKey<AuctionPrice>(ap => ap.auction_id)
+                .HasOne(auction => auction.Item)
+                .WithOne(item => item.Auction)
+                .HasForeignKey<Auction>(auction => auction.item_id)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            /*modelBuilder.Entity<Auction>()
+                .HasOne(auction => auction.AuctionPrice)
+                .WithOne(price => price.Auction)
+                .HasForeignKey<Auction>(price => price.auction_id);*/
+
             modelBuilder.Entity<AuctionPrice>()
-                .HasOne<User>()
-                .WithMany()
-                .HasForeignKey(i => i.user_id);
+                .HasOne(price => price.User)
+                .WithMany(user => user.Bids)
+                .HasForeignKey(price => price.user_id)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
