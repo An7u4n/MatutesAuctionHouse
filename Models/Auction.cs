@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace MatutesAuctionHouse.Models
 {
@@ -8,7 +9,7 @@ namespace MatutesAuctionHouse.Models
         [Required][Key][DatabaseGenerated(DatabaseGeneratedOption.Identity)] public int auction_id { get; set; }
         [Required] public int item_id { get; set; }
         [Required] public DateTime auction_start_date { get; set; }
-        public virtual AuctionPrice? AuctionPrice { get; set; }
+        [JsonIgnore] public virtual AuctionPrice? AuctionPrice { get; set; }
         [ForeignKey("item_id")]
         public virtual Item Item { get; set; }
     }

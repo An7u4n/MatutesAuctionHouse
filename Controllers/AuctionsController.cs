@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MatutesAuctionHouse.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.SignalR;
+using MatutesAuctionHouse.Hubs;
+using MatutesAuctionHouse.Services;
+using System.Security.Cryptography;
 
 namespace MatutesAuctionHouse.Controllers
 {
@@ -16,10 +21,14 @@ namespace MatutesAuctionHouse.Controllers
     public class AuctionsController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IAuctionService _auctionService;
+        private readonly IHubContext<AuctionHub> _hubContext;
 
-        public AuctionsController(AppDbContext context)
+        public AuctionsController(AppDbContext context, IAuctionService auctionService, IHubContext<AuctionHub> hubContext)
         {
             _context = context;
+            _auctionService = auctionService;
+            _hubContext = hubContext;
         }
 
         // GET: api/Auctions
@@ -157,13 +166,32 @@ namespace MatutesAuctionHouse.Controllers
 
             _context.Auctions.Remove(auction);
             await _context.SaveChangesAsync();
-
             return NoContent();
+        }
+
+        [HttpPost("{id}/AuctionPrice")]
+        public async Task<IActionResult> PlaceBid(int id, [FromBody] BidRequest bidRequest)
+        {
+            try
+            {
+                var auctionPrice = await _auctionService.PlaceBidAsync(id, bidRequest.user_id, bidRequest.price);
+                await _hubContext.Clients.All.SendAsync("ReceiveBidUpdate", id, bidRequest.price);
+                return Ok(auctionPrice);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         private bool AuctionExists(int id)
         {
             return (_context.Auctions?.Any(e => e.auction_id == id)).GetValueOrDefault();
+        }
+        public class BidRequest
+        {
+            public int user_id { get; set; }
+            public int price { get; set; }
         }
     }
 }

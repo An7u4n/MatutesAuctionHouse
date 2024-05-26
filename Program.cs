@@ -1,4 +1,4 @@
-using MatutesAuctionHouse.Graphql;
+using MatutesAuctionHouse.Hubs;
 using MatutesAuctionHouse.Models;
 using MatutesAuctionHouse.Models.Common;
 using MatutesAuctionHouse.Services;
@@ -19,20 +19,17 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: corspol,
                       policy =>
                       {
-                          policy.AllowAnyOrigin()
-                            .AllowAnyHeader()
-                            .AllowAnyMethod();
+                        policy.WithOrigins("https://localhost:44442") // URL de tu aplicación Angular
+                                 .AllowAnyHeader()
+                                 .AllowAnyMethod()
+                                 .AllowCredentials();
                       });
 });
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 var appSettingsSection = builder.Configuration.GetSection("AppSettings");
 builder.Services.Configure<AppSettings>(appSettingsSection);
 builder.Services.AddScoped<AuctionService>();
-
-builder.Services
-    .AddGraphQLServer()
-    .AddQueryType<MatutesAuctionHouse.Graphql.Query>()
-    .AddMutationType<Mutation>();
+builder.Services.AddSignalR();
 
 // JWT
 var appSettings = appSettingsSection.Get<AppSettings>();
@@ -56,7 +53,9 @@ builder.Services.AddAuthentication(d =>
     });
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuctionService, AuctionService>();
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("database")));
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -73,17 +72,18 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseCors(corspol);
 app.UseWebSockets();
 app.UseRouting();
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapGraphQL();
+    endpoints.MapControllers();
+    endpoints.MapHub<AuctionHub>("/auctionHub");
 });
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
-app.UseCors(corspol);
 
 
 app.MapControllerRoute(
