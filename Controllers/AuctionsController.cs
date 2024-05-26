@@ -85,37 +85,60 @@ namespace MatutesAuctionHouse.Controllers
         // POST: api/Auctions
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Auction>> PostAuction(Auction auction)
+        public async Task<ActionResult<AuctionDto>> PostAuction(AuctionDto auctionDto)
         {
             if (_context.Auctions == null)
             {
                 return Problem("Entity set 'AppDbContext.Auctions'  is null.");
             }
 
-            /*if (auctionDto.auction_start_date < DateTime.Now)
-            {
-                return BadRequest("Auction start time is in the past.");
-            }
+            if (auctionDto.auction_start_date < DateTime.Now) return BadRequest("Auction start time is past.");
+
+            // Check if there is an auction for the sended item
+            var exist = await _context.Auctions.AnyAsync(a => a.item_id == auctionDto.item_id);
+
+            if (exist) return BadRequest("There is an auction for this item");
+
             // Validar existencia del item
             var item = await _context.Items.FindAsync(auctionDto.item_id);
 
-            if (item == null)
-            {
-                return NotFound("Item not found.");
-            }
+            if (item == null) return NotFound("Item not found.");
 
             var auction = new Auction
             {
                 auction_start_date = auctionDto.auction_start_date,
                 item_id = auctionDto.item_id,
-                Item = item,
-
-            };*/
+                Item = item
+            };
 
             _context.Auctions.Add(auction);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAuction", new { id = auction.auction_id }, auction);
+            // Create an AuctionPrice for the Auction
+
+            var user = await _context.Users.FindAsync(item.user_id);
+            if (user == null) return NotFound("The item has no owner");
+
+            var auctionPrice = new AuctionPrice
+            {
+                auction_id = auction.auction_id,
+                price = 0,
+                user_id = user.user_id,
+                User = user,
+                Auction = auction
+            };
+
+            _context.AuctionPrices.Add(auctionPrice);
+            await _context.SaveChangesAsync();
+
+            var result = new AuctionDto
+            {
+                auction_id = auction.auction_id,
+                auction_start_date = auction.auction_start_date,
+                item_id = auction.item_id
+            };
+
+            return CreatedAtAction("GetAuction", new { id = auction.auction_id }, result);
         }
 
         // DELETE: api/Auctions/5

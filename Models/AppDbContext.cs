@@ -39,11 +39,6 @@ namespace MatutesAuctionHouse.Models
                 .HasForeignKey<Auction>(auction => auction.item_id)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            /*modelBuilder.Entity<Auction>()
-                .HasOne(auction => auction.AuctionPrice)
-                .WithOne(price => price.Auction)
-                .HasForeignKey<Auction>(price => price.auction_id);*/
-
             modelBuilder.Entity<AuctionPrice>()
                 .HasOne(price => price.User)
                 .WithMany(user => user.Bids)
