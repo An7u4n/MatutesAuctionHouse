@@ -18,5 +18,9 @@ export class AuctionComponent implements OnInit {
     this.apiservice.getItem(this.auction.item_id).subscribe(result => {
       this.item = result;
     }, err => console.error(err));
+
+    this.apiservice.getAuctionPrice(this.auction.auction_id).subscribe(result => {
+      this.auction.price = result.price;
+    }, err => console.error(err));
   }
 }

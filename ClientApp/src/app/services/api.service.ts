@@ -74,5 +74,9 @@ export class ApiService {
     return this._http.delete<any>(this.url + 'Auctions/' + auction_id);
   }
 
+  // AuctionPrice
+  getAuctionPrice(auction_id: number) {
+    return this._http.get<any>(this.url + 'AuctionPrices/' + auction_id);
+  }
 
 }

@@ -21,11 +21,11 @@ import { MatIconModule } from '@angular/material/icon'
 import { ProfileComponent } from './profile/profile.component';
 import { BidDemoComponent } from './bid-demo/bid-demo.component';
 // graphql
-import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
-import { ApolloClientOptions, InMemoryCache } from '@apollo/client/core';
-import { WebSocketLink } from '@apollo/client/link/ws';
+//import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
+//import { ApolloClientOptions, InMemoryCache } from '@apollo/client/core';
+//import { WebSocketLink } from '@apollo/client/link/ws';
 
-const createApollo = (): ApolloClientOptions<any> => {
+/*const createApollo = (): ApolloClientOptions<any> => {
   const wsLink = new WebSocketLink({
     uri: `wss://localhost:7268/graphql/`, // URL del servidor GraphQL con soporte para WebSockets
     options: {
@@ -37,7 +37,7 @@ const createApollo = (): ApolloClientOptions<any> => {
     link: wsLink,
     cache: new InMemoryCache(),
   };
-};
+};*/
  
 @NgModule({
   declarations: [
@@ -58,7 +58,7 @@ const createApollo = (): ApolloClientOptions<any> => {
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    ApolloModule,
+    //ApolloModule,
     RouterModule.forRoot([
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
@@ -72,7 +72,7 @@ const createApollo = (): ApolloClientOptions<any> => {
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: APOLLO_OPTIONS, useFactory: createApollo, deps: []}
+    //{ provide: APOLLO_OPTIONS, useFactory: createApollo, deps: []}
   ],
   bootstrap: [AppComponent]
 })
