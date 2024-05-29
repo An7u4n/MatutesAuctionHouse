@@ -13,13 +13,17 @@ export class AuctionContainerComponent implements OnInit {
   constructor(private apiservice: ApiService, private signalRService: SignalRService) {
     this.apiservice.getAuctions().subscribe(result => {
       this.auctions = result;
+      this.auctions.forEach(auction => {
+        let auctionStartDate = new Date(auction.auction_start_date);
+        let auctionEndDate = new Date(auctionStartDate.getTime() + 2 * 60 * 60 * 1000);
+        auction.endded = new Date() > auctionEndDate;
+      });
     }, err => console.error(err));
   }
 
   ngOnInit() {
-    // Escuchar los mensajes entrantes
     this.signalRService.messages$.subscribe(message => {
-      console.log('New bid:', message);
+      //console.log('New bid!:', message);
       let modAuction = this.auctions.find(auction => auction.auction_id === message.auctionId);
       if (modAuction) {
         modAuction.price = message.newPrice;

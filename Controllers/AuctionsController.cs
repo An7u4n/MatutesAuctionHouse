@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.SignalR;
 using MatutesAuctionHouse.Hubs;
 using MatutesAuctionHouse.Services;
 using System.Security.Cryptography;
+using MatutesAuctionHouse.Models.Response;
 
 namespace MatutesAuctionHouse.Controllers
 {
@@ -139,15 +140,19 @@ namespace MatutesAuctionHouse.Controllers
 
             _context.AuctionPrices.Add(auctionPrice);
             await _context.SaveChangesAsync();
-
-            var result = new AuctionDto
+            var response = new Response()
             {
-                auction_id = auction.auction_id,
-                auction_start_date = auction.auction_start_date,
-                item_id = auction.item_id
+                success = 1,
+                message = "Auction added",
+                data = new AuctionDto
+                {
+                    auction_id = auction.auction_id,
+                    auction_start_date = auction.auction_start_date,
+                    item_id = auction.item_id
+                }
             };
 
-            return CreatedAtAction("GetAuction", new { id = auction.auction_id }, result);
+            return CreatedAtAction("GetAuction", new { id = auction.auction_id }, response);
         }
 
         // DELETE: api/Auctions/5
@@ -169,14 +174,15 @@ namespace MatutesAuctionHouse.Controllers
             return NoContent();
         }
 
-        [HttpPost("{id}/AuctionPrice")]
-        public async Task<IActionResult> PlaceBid(int id, [FromBody] BidRequest bidRequest)
+        // POST: api/Auctions/AuctionPrice
+        [HttpPost("AuctionPrice")]
+        public async Task<IActionResult> PlaceBid([FromBody] AuctionPriceDto auctionPriceDto)
         {
             try
             {
-                var auctionPrice = await _auctionService.PlaceBidAsync(id, bidRequest.user_id, bidRequest.price);
-                await _hubContext.Clients.All.SendAsync("ReceiveBidUpdate", id, bidRequest.price);
-                return Ok(auctionPrice);
+                var auctionPrice = await _auctionService.PlaceBidAsync(auctionPriceDto.auction_id, auctionPriceDto.user_id, auctionPriceDto.price);
+                await _hubContext.Clients.All.SendAsync("ReceiveBidUpdate", auctionPriceDto.auction_id, auctionPriceDto.price, auctionPriceDto.user_id);
+                return Ok(auctionPriceDto);
             }
             catch (InvalidOperationException ex)
             {
@@ -187,11 +193,6 @@ namespace MatutesAuctionHouse.Controllers
         private bool AuctionExists(int id)
         {
             return (_context.Auctions?.Any(e => e.auction_id == id)).GetValueOrDefault();
-        }
-        public class BidRequest
-        {
-            public int user_id { get; set; }
-            public int price { get; set; }
         }
     }
 }

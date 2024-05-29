@@ -10,11 +10,15 @@ import { ApiService } from '../services/api.service';
 export class AuctionComponent implements OnInit {
   @Input() auction: any;
   public item: any;
+  public started: boolean = false;
   constructor(private apiservice: ApiService) {
 
   }
 
   ngOnInit() {
+    if (new Date(this.auction.auction_start_date) < new Date()) this.started = true;
+    else this.started = false;
+
     this.apiservice.getItem(this.auction.item_id).subscribe(result => {
       this.item = result;
     }, err => console.error(err));

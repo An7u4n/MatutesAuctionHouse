@@ -13,5 +13,16 @@
     <p>
       Precio: {{ auction.price }} <!--Usuario que subastó: {{ auction.user_bid }}-->
     </p>
+    <span *ngIf="started">
+      <p *ngIf="auction.endded">
+        La subasta finalizo
+      </p>
+      <p *ngIf="!auction.endded">
+        La subasta ha comenzado
+      </p>
+    </span>
+    <p *ngIf="!started">
+      La subasta va a comenzar
+    </p>
   </div>
 </article>

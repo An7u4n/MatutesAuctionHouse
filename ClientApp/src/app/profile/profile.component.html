@@ -1,11 +1,11 @@
 <div class="container">
-  <mat-icon class="icon">person</mat-icon>
+  <mat-icon *ngIf="!imageSrc" class="icon">person</mat-icon>
+  <img [src]="imageSrc" class="icon" *ngIf="imageSrc">
 
   <h2>{{user.user_name}}</h2>
 
-  <form>
-    <p>Cambiar foto de perfil:</p>
-    <input type="file"/>
+  <form (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+    <input type="file" (change)="onFileSelected($event)" />
     <button type="submit">Enviar</button>
   </form>
 </div>

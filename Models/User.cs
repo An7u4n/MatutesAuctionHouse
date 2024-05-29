@@ -10,6 +10,7 @@ namespace MatutesAuctionHouse.Models
         [Required] public string user_name { get; set; }
         [Required] public string email {  get; set; }
         [Required] public string password {  get; set; }
+        public byte[]? profile_image { get; set; }
 
         public ICollection<Item> Items { get; } = new List<Item>();
         public ICollection<AuctionPrice> Bids { get; } = new List<AuctionPrice>();

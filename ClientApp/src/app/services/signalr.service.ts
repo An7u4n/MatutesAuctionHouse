@@ -18,8 +18,8 @@ export class SignalRService {
       .build();
 
     // Establecer el método de recepción para los mensajes entrantes
-    this.hubConnection.on('ReceiveBidUpdate', (auctionId, newPrice) => {
-      this.messageSubject.next({ auctionId, newPrice });
+    this.hubConnection.on('ReceiveBidUpdate', (auctionId, newPrice, userId) => {
+      this.messageSubject.next({ auctionId, newPrice, userId });
     });
 
     // Iniciar la conexión
@@ -28,7 +28,7 @@ export class SignalRService {
 
   private startConnection() {
     this.hubConnection.start()
-      .then(() => console.log('Connection started'))
-      .catch(err => console.error('Error while starting connection: ' + err));
+      .then(() => console.log('Connection with SingalR started'))
+      .catch(err => console.error('Error while starting connection with SingalR: ' + err));
   }
 }

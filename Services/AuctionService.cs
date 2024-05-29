@@ -13,23 +13,31 @@ namespace MatutesAuctionHouse.Services
             _context = context;
         }
 
-        public async Task<AuctionPrice> PlaceBidAsync(int auction_id, int user_id, int price)
+        public async Task<AuctionPrice> PlaceBidAsync(int auctionId, int userId, int bidPrice)
         {
-            var auction = _context.Auctions.Find(auction_id);
-            if (auction == null) throw new InvalidOperationException("Auction doesnt exists");
-            AuctionPrice? auctionPrice = await _context.AuctionPrices.AsNoTracking().FirstOrDefaultAsync(auc => auc.auction_id == auction_id);
-            DateTime auction_end_date = auction.auction_start_date.AddHours(2);
-            if (DateTime.Now < auction.auction_start_date || DateTime.Now > auction_end_date || auctionPrice == null)
-            {
-                throw new InvalidOperationException("Invalid auction or auction has ended. "+DateTime.Now+" "+auction.auction_start_date+" "+auction_end_date);
-            }
+            var auction = await _context.Auctions
+                .Include(a => a.AuctionPrice)
+                .FirstOrDefaultAsync(a => a.auction_id == auctionId);
 
-            auctionPrice.user_id = user_id;
-            auctionPrice.price = price;
+            if (auction == null)
+                throw new InvalidOperationException("Auction does not exist.");
 
-            // Anexar la instancia modificada al contexto y marcarla como modificada
-            _context.AuctionPrices.Attach(auctionPrice);
-            _context.Entry(auctionPrice).State = EntityState.Modified;
+            var auctionPrice = auction.AuctionPrice;
+            DateTime auctionEndDate = auction.auction_start_date.AddHours(2);
+
+            if (DateTime.Now < auction.auction_start_date || DateTime.Now > auctionEndDate)
+                throw new InvalidOperationException($"Auction is not active. Current time: {DateTime.Now}, Auction start: {auction.auction_start_date}, Auction end: {auctionEndDate}");
+
+            if (auctionPrice == null)
+                throw new InvalidOperationException("Auction price does not exist.");
+
+            if (auctionPrice.price >= bidPrice)
+                throw new InvalidOperationException("The bid amount is lower than or equal to the current highest bid.");
+
+            auctionPrice.user_id = userId;
+            auctionPrice.price = bidPrice;
+
+            _context.AuctionPrices.Update(auctionPrice);
 
             try
             {
@@ -37,7 +45,7 @@ namespace MatutesAuctionHouse.Services
             }
             catch (DbUpdateConcurrencyException)
             {
-                throw;
+                throw new InvalidOperationException("An error occurred while updating the auction price. Please try again.");
             }
 
             return auctionPrice;

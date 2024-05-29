@@ -3,6 +3,7 @@ export interface User {
   user_name: string;
   password: string;
   email: string;
+  profile_image?: string;
 }
 
 export interface Item {
@@ -17,6 +18,7 @@ export interface Auction {
   item_id: number;
   auction_start_date: Date;
   price: number;
+  endded: boolean;
 }
 
 export interface Response {

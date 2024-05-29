@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using MatutesAuctionHouse.Models;
 using MatutesAuctionHouse.Services;
 using MatutesAuctionHouse.Tools;
+using System.Drawing;
 
 namespace MatutesAuctionHouse.Controllers
 {
@@ -116,6 +117,42 @@ namespace MatutesAuctionHouse.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [HttpGet("{id}/image")]
+        public async Task<IActionResult> GetImage(int id)
+        {
+            var user = await _context.Users.FindAsync(id); // Implementa este método según tu lógica
+            if (user == null || user.profile_image == null) return NotFound("Image not found.");
+
+            byte[] imageBytes = user.profile_image;
+
+            return File(imageBytes, "image/jpeg");
+        }
+
+        [HttpPut("{id}/image")]
+        public async Task<IActionResult> OnPostUploadAsync(int id, [FromForm] IFormFile image)
+        {
+            if (image == null || image.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            using (var memoryStream = new MemoryStream())
+            {
+                await image.CopyToAsync(memoryStream);
+                user.profile_image = memoryStream.ToArray();
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Image Saved" });
         }
 
         private bool UserExists(int id)

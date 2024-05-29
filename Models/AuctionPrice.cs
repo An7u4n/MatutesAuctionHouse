@@ -13,4 +13,12 @@ namespace MatutesAuctionHouse.Models
         [ForeignKey("auction_id")][JsonIgnore] public virtual Auction Auction { get; set; }
         [ForeignKey("user_id")] public virtual User User { get; set; }
     }
+
+    public class AuctionPriceDto
+    {
+        public int auction_id { get; set; }
+        public int price { get; set; }
+        public int user_id { get; set; }
+    }
+
 }
