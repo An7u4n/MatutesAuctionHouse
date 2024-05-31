@@ -5,6 +5,12 @@ article {
   box-shadow: rgba(0, 0, 0, 0.25);
   background-color: #1D232C;
   transition: 300ms;
+  transition: grid-column 0.3s ease, transform 0.3s ease;
+}
+
+article:hover {
+  grid-column: span 2;
+  transform: scale(1.05);
 }
 
 article:hover {
