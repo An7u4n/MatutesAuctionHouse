@@ -11,7 +11,7 @@ namespace MatutesAuctionHouse.Models
         [Required] public int user_id { get; set; }
         [ForeignKey("user_id")]
         public virtual User User { get; set; }
-        public virtual Auction? Auction { get; set; }
+        public virtual ICollection<Auction> Auction { get; set; }
     }
     public class ItemDto
     {

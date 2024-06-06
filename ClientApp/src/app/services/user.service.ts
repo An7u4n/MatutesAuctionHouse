@@ -27,8 +27,4 @@ export class UserService {
       password: password,
     });
   }
-
-  deleteUser(user_id: number): Observable<any> {
-    return this._http.delete<any>(this.url + 'Users/' + user_id);
-  }
 }

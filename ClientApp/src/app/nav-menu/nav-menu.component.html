@@ -8,6 +8,9 @@
       <li *ngIf="user">
         <a [routerLink]="['/auctions']">Subastas</a>
       </li>
+      <li *ngIf="user">
+        <a [routerLink]="['/add-auction']">Create Auctions</a>
+      </li>
       <li *ngIf="user" [matMenuTriggerFor]="appMenu">
         <a class="profile">
           {{ user.user_name }}

@@ -1,0 +1,14 @@
+.subtitle {
+  font-size: 32px;
+  font-weight: bold;
+  margin-top: 1em;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form button {
+    font-weight: bold;
+}

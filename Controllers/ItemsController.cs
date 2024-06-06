@@ -50,9 +50,19 @@ namespace MatutesAuctionHouse.Controllers
 
             return item;
         }
+        // GET Items not sold by user
+        [HttpGet("notsold/{id}")]
+        public async Task<ActionResult<IEnumerable<Item>>> GetItemsByOwner(int id)
+        {
+            if (_context.Items == null)
+            {
+                return NotFound();
+            }
+            return await _context.Items.Where(i => i.user_id == id).ToListAsync();
+        }
+
 
         // PUT: api/Items/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutItem(int id, Item item)
         {

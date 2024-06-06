@@ -5,3 +5,28 @@
   padding-top: 50px;
   grid-template-columns: repeat(3, 1fr);
 }
+
+article {
+  border: 2px solid black;
+  border-radius: 25px;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.25);
+  background-color: #1D232C;
+  transition: 300ms;
+  transition: grid-column 0.3s ease, transform 0.3s ease;
+}
+
+article:hover {
+  background-color: #161B21;
+  transition: 300ms;
+}
+
+img {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+
+.bid-input {
+    color: black;
+}

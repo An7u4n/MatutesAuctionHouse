@@ -18,7 +18,7 @@ export class RegisterComponent {
   }
 
   register(userForm: any) {
-    this.userservice.postUser(userForm.value.user_name, userForm.value.password, userForm.value.email).subscribe(res => {
+    this.userservice.postUser(userForm.value.user_name, userForm.value.email, userForm.value.password).subscribe(res => {
       alert("User Created");
     }, err => console.error(err));
   }

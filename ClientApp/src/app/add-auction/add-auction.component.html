@@ -1,0 +1,35 @@
+<p class="subtitle">Add Item</p>
+<form (ngSubmit)="onSubmitItem(itemForm)" #itemForm="ngForm">
+  <mat-form-field appearance="outline">
+    <mat-label>Item Name</mat-label>
+    <input matInput ngModel name="itemName" required>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Item Description</mat-label>
+    <input matInput ngModel name="itemDescription" required>
+  </mat-form-field>
+
+  <button mat-raised-button type="submit" color="primary">Add Item</button>
+</form>
+
+<p class="subtitle">Add Auction</p>
+
+<!-- TODO: add price initial value -->
+<form (ngSubmit)="onSubmitAuction(auctionForm)" #auctionForm="ngForm">
+
+  <mat-form-field appearance="outline">
+    <mat-label>Chose Item</mat-label>
+    <mat-select ngModel name="selectedItem">
+      <mat-option *ngFor="let item of items" [value]="item.item_id">
+        {{item.item_name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Auction Start Time</mat-label>
+    <input matInput ngModel type="datetime-local" name="datePicker" class="date-picker" required>
+  </mat-form-field>
+
+  <button mat-raised-button type="submit" color="primary">Create Auction</button>
+</form>

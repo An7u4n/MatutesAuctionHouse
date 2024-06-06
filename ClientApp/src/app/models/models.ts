@@ -17,8 +17,9 @@ export interface Auction {
   auction_id: number;
   item_id: number;
   auction_start_date: Date;
-  price: number;
+  price?: number;
   endded: boolean;
+  started: boolean;
 }
 
 export interface Response {

@@ -10,6 +10,7 @@ import { SignalRService } from '../services/signalr.service';
 })
 export class AuctionContainerComponent implements OnInit {
   public auctions: Auction[] = [];
+  public bidAmount: number = 0;
   constructor(private apiservice: ApiService, private signalRService: SignalRService) {
     this.apiservice.getAuctions().subscribe(result => {
       this.auctions = result;
@@ -17,17 +18,35 @@ export class AuctionContainerComponent implements OnInit {
         let auctionStartDate = new Date(auction.auction_start_date);
         let auctionEndDate = new Date(auctionStartDate.getTime() + 2 * 60 * 60 * 1000);
         auction.endded = new Date() > auctionEndDate;
+        auction.started = new Date() > auctionStartDate;
       });
+      for (let auction of this.auctions) {
+        this.apiservice.getAuctionPrice(auction.auction_id).subscribe(
+          result => {
+            auction.price = result.price;
+          },
+          err => console.error(err)
+        );
+      }
     }, err => console.error(err));
   }
 
   ngOnInit() {
     this.signalRService.messages$.subscribe(message => {
-      //console.log('New bid!:', message);
       let modAuction = this.auctions.find(auction => auction.auction_id === message.auctionId);
       if (modAuction) {
         modAuction.price = message.newPrice;
       }
     });
+
   }
+
+  submitBid(auctionId: number, bidAmount: number) {
+    const user = localStorage.getItem('user');
+    if (user) {
+      this.apiservice.sendBid(auctionId, bidAmount).subscribe(res => console.log(res), err => console.error(err));
+
+    } else console.log("No user logged");
+  }
+
 }

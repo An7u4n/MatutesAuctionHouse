@@ -8,8 +8,14 @@ import { User, Item, Auction } from '../models/models';
 })
 export class ApiService {
   url: string = 'https://localhost:7268/api/'
-
-  constructor(private _http: HttpClient) { }
+  userId: number;
+  constructor(private _http: HttpClient) {
+    const user = localStorage.getItem('user');
+    if (user) {
+      const userObject = JSON.parse(user);
+      this.userId = userObject.user_id;
+    } else this.userId = 0;
+  }
 
   // Items Methods
   getItem(item_id: number) {
@@ -20,11 +26,15 @@ export class ApiService {
     return this._http.get<Item[]>(this.url + 'Items');
   }
 
-  postItems(item_name: string, item_description: string, user_id: number): Observable<any> {
+  getItemsByOwner(): Observable<Item[]> {
+    return this._http.get<Item[]>(this.url + 'Items/notsold/' + this.userId);
+  }
+
+  postItem(item_name: string, item_description: string): Observable<any> {
     return this._http.post<any>(this.url + 'Items', {
       item_name: item_name,
       item_description: item_description,
-      user_id: user_id,
+      user_id: this.userId,
     })
   }
 
@@ -56,6 +66,10 @@ export class ApiService {
   // AuctionPrice
   getAuctionPrice(auction_id: number) {
     return this._http.get<any>(this.url + 'AuctionPrices/' + auction_id);
+  }
+
+  sendBid(auction_id: number, price: number) {
+    return this._http.post<any>(this.url + 'Auctions/AuctionPrice', { auction_id: auction_id, price: price, user_id: this.userId });
   }
 
 }
