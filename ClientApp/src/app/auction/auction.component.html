@@ -8,7 +8,7 @@
       Comienzo: {{ auction.auction_start_date }}
     </p>
     <p>
-      Precio: {{ auction.price }} Usuario que subastó: <!--{{ auction.lastBidUserName }}-->
+      Precio: {{ auction.price }} <!--Usuario que subastó: {{ auction.lastBidUserName }}-->
     </p>
     <span *ngIf="started">
       <p *ngIf="auction.endded">
