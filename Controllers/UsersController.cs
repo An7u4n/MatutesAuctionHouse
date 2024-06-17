@@ -119,10 +119,11 @@ namespace MatutesAuctionHouse.Controllers
             return NoContent();
         }
 
+        // Get user profile image
         [HttpGet("{id}/image")]
         public async Task<IActionResult> GetImage(int id)
         {
-            var user = await _context.Users.FindAsync(id); // Implementa este método según tu lógica
+            var user = await _context.Users.FindAsync(id); 
             if (user == null || user.profile_image == null) return NotFound("Image not found.");
 
             byte[] imageBytes = user.profile_image;

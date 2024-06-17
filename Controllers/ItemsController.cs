@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MatutesAuctionHouse.Models;
 using Microsoft.AspNetCore.Authorization;
+using MatutesAuctionHouse.Models.Response;
 
 namespace MatutesAuctionHouse.Controllers
 {
@@ -31,6 +32,17 @@ namespace MatutesAuctionHouse.Controllers
               return NotFound();
           }
             return await _context.Items.ToListAsync();
+        }
+        // Get item image
+        [HttpGet("{id}/image")]
+        public async Task<IActionResult> GetItemImage(int id)
+        {
+            var item = await _context.Items.FindAsync(id);
+            if (item == null || item.itemImage == null) return NotFound("Image not found.");
+
+            byte[] imageBytes = item.itemImage;
+
+            return File(imageBytes, "image/jpeg");
         }
 
         // GET: api/Items/5
@@ -95,39 +107,44 @@ namespace MatutesAuctionHouse.Controllers
         // POST: api/Items
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ItemDto>> PostItem(ItemDto itemDto)
+        public async Task<ActionResult<ItemDto>> PostItem([FromForm] string item_name, [FromForm] string item_description, [FromForm] int user_id, [FromForm] IFormFile image)
         {
-          if (_context.Items == null)
-          {
-              return Problem("Entity set 'AppDbContext.Items'  is null.");
-          }
+            if (_context.Items == null)
+            {
+                return Problem("Entity set 'AppDbContext.Items'  is null.");
+            }
 
-            var user = await _context.Users.FindAsync(itemDto.user_id);
+            var user = await _context.Users.FindAsync(user_id);
             if (user == null)
             {
                 return NotFound(new { Message = "User not found" });
             }
 
+            if (image == null || image.Length == 0)
+            {
+                return BadRequest(new { Message = "Image is required" });
+            }
+
             var item = new Item
             {
-                item_name = itemDto.item_name,
-                item_description = itemDto.item_description,
-                user_id = itemDto.user_id,
-                User = user
+                item_name = item_name,
+                item_description = item_description,
+                user_id = user_id,
+                User = user,
             };
 
+            using (var memoryStream = new MemoryStream())
+            {
+                await image.CopyToAsync(memoryStream);
+                item.itemImage = memoryStream.ToArray();
+            }
+
+            user.Items.Add(item);
             _context.Items.Add(item);
+            _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
-            var result = new ItemDto
-            {
-                item_id = item.item_id,
-                item_name = item.item_name,
-                item_description = item.item_description,
-                user_id = item.user_id
-            };
-
-            return CreatedAtAction("GetItem", new { id = item.item_id }, result);
+            return CreatedAtAction("GetItem", new { id = item.item_id }, new Response { success = 1, message = "Item Added", data = item_name });
         }
 
         // DELETE: api/Items/5
