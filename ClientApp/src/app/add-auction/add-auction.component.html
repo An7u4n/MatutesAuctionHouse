@@ -8,6 +8,7 @@
     <mat-label>Item Description</mat-label>
     <input matInput ngModel name="itemDescription" required>
   </mat-form-field>
+  <input type="file" (change)="onFileSelected($event)" />
 
   <button mat-raised-button type="submit" color="primary">Add Item</button>
 </form>

@@ -16,9 +16,14 @@ export class ApiService {
       this.userId = userObject.user_id;
     } else this.userId = 0;
   }
+  // User Methods
+
+  getUserById(userId: number): Observable<User> {
+    return this._http.get<User>(this.url + 'Users/' + userId);
+  };
 
   // Items Methods
-  getItem(item_id: number) {
+  getItem(item_id: number): Observable<Item> {
     return this._http.get<any>(this.url + 'Items/' + item_id);
   }
 
@@ -26,17 +31,15 @@ export class ApiService {
     return this._http.get<Item[]>(this.url + 'Items');
   }
 
+  getItemImage(item_id: number): Observable<any> {
+    return this._http.get(this.url + 'Items/' + item_id + '/image', { responseType: 'blob' });
+  }
+
   getItemsByOwner(): Observable<Item[]> {
     return this._http.get<Item[]>(this.url + 'Items/notsold/' + this.userId);
   }
 
-  postItem(item_name: string, item_description: string): Observable<any> {
-    return this._http.post<any>(this.url + 'Items', {
-      item_name: item_name,
-      item_description: item_description,
-      user_id: this.userId,
-    })
-  }
+  //postItem(item_name: string, item_description: string, itemPhoto: any): Observable<any> {  }
 
   deleteItem(item_id: number) {
     return this._http.delete<any>(this.url + 'Items/' + item_id);

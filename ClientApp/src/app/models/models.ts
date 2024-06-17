@@ -20,6 +20,7 @@ export interface Auction {
   price?: number;
   endded: boolean;
   started: boolean;
+  lastBidUserName?: string;
 }
 
 export interface Response {

@@ -1,26 +1,27 @@
 <article>
   <div class="image-container">
-    <img class="product-img" src="../../assets/images/producto1.png" />
+    <img *ngIf="imageUrl" [src]="imageUrl" alt="Item Image">
     {{ item ? item.item_name : "cargando"}}
   </div>
   <div class="info-container">
     <p>
-      Id de la subasta: {{ auction.auction_id }}
+      Comienzo: {{ auction.auction_start_date }}
     </p>
     <p>
-      Dia de subasta: {{ auction.auction_start_date }}
-    </p>
-    <p>
-      Precio: {{ auction.price }} <!--Usuario que subastó: {{ auction.user_bid }}-->
+      Precio: {{ auction.price }} Usuario que subastó: <!--{{ auction.lastBidUserName }}-->
     </p>
     <span *ngIf="started">
       <p *ngIf="auction.endded">
         La subasta finalizo
       </p>
-      <p *ngIf="!auction.endded">
-        La subasta ha comenzado
-      </p>
     </span>
+    <form *ngIf="!auction.endded" (ngSubmit)="submitBid(auction.auction_id, bidAmount)">
+      La subasta ha comenzado
+      <label>Send a Bid</label>
+      <br />
+      <input class="bid-input" type="number" placeholder="Bid Amount" [(ngModel)]="bidAmount" name="bidAmount" required />
+      <button class="btn-primary" type="submit">Send Bid</button>
+    </form>
     <p *ngIf="!started">
       La subasta va a comenzar
     </p>

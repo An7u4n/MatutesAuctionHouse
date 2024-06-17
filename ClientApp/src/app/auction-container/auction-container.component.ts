@@ -15,12 +15,14 @@ export class AuctionContainerComponent implements OnInit {
     this.apiservice.getAuctions().subscribe(result => {
       this.auctions = result;
       this.auctions.forEach(auction => {
+        // set the ended and started properties
         let auctionStartDate = new Date(auction.auction_start_date);
         let auctionEndDate = new Date(auctionStartDate.getTime() + 2 * 60 * 60 * 1000);
         auction.endded = new Date() > auctionEndDate;
         auction.started = new Date() > auctionStartDate;
       });
       for (let auction of this.auctions) {
+        // get prices for each auction
         this.apiservice.getAuctionPrice(auction.auction_id).subscribe(
           result => {
             auction.price = result.price;
@@ -36,16 +38,18 @@ export class AuctionContainerComponent implements OnInit {
       let modAuction = this.auctions.find(auction => auction.auction_id === message.auctionId);
       if (modAuction) {
         modAuction.price = message.newPrice;
+        /*this.apiservice.getUserById(message.userId).subscribe(user => {
+          if(modAuction)
+            modAuction.lastBidUserName = user.user_name
+        }, err => console.error(err))*/
       }
     });
-
   }
 
   submitBid(auctionId: number, bidAmount: number) {
     const user = localStorage.getItem('user');
     if (user) {
       this.apiservice.sendBid(auctionId, bidAmount).subscribe(res => console.log(res), err => console.error(err));
-
     } else console.log("No user logged");
   }
 
