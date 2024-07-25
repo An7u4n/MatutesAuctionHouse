@@ -19,7 +19,11 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: corspol,
                       policy =>
                       {
-                        policy.WithOrigins("https://localhost:44442") // URL de tu aplicación Angular
+                        policy.WithOrigins("https://localhost:44442")
+                                 .AllowAnyHeader()
+                                 .AllowAnyMethod()
+                                 .AllowCredentials();
+                          policy.WithOrigins("https://localhost:4200")
                                  .AllowAnyHeader()
                                  .AllowAnyMethod()
                                  .AllowCredentials();
