@@ -5,7 +5,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './security/auth-guard';
 import { LoginComponent } from './login/login.component';
 import { JwtInterceptor } from './security/jwt.interceptor';
@@ -30,7 +29,6 @@ import { MatNativeDateModule } from '@angular/material/core';
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent,
     LoginComponent,
     AuctionContainerComponent,
     AuctionComponent,
@@ -48,7 +46,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     RouterModule.forRoot([
       { path: 'login', component: LoginComponent },
       { path: 'register', component: RegisterComponent },
-      { path: '', component: HomeComponent, pathMatch: 'full', canActivate: [AuthGuard]},
+      { path: '', component: AuctionContainerComponent, pathMatch: 'full', canActivate: [AuthGuard]},
       { path: 'auctions', component: AuctionContainerComponent, canActivate: [AuthGuard] },
       { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
       { path: 'add-auction', component: AddAuctionComponent, canActivate: [AuthGuard] },
