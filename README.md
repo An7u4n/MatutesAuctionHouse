@@ -7,7 +7,7 @@ Live price updates are managed using SignalR-WebSockets, allowing for real-time 
 The database is SQL Server, and the ORM is Entity Framework. Images are currently stored as bytes in the database, but this could be improved by using blob storage.
 
 ---------------------------------------------
-Database Entities Diagram:
+Database Table Diagram:
 
 ![image](https://github.com/user-attachments/assets/5448ea72-f540-47c8-a4fa-53beee1d7ca3).
 
